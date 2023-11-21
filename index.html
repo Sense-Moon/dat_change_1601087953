@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>dat_change</title>
+</head>
+<style>
+
+body{
+background-color:#000003;
+color:#FCFCFC;
+font-size:17px;
+line-height: 1.6;
+font-family: "メイリオ";
+overflow-wrap: break-word;
+}
+
+.top {
+width:100%
+}
+.sure {
+width:100%
+}
+
+#text-area {
+    width: 100%;
+</style>
+<script>
+
+function change() {
+    // テキストエリアの内容を取得
+    var text = document.getElementById('text-area').value;
+
+    // httpsの前に改行コードを挿入
+    text = text.replace(/https/g, '\nhttps');
+
+    // 改行コードで分割して各行を処理
+    var originalUrls = text.split('\n');
+
+    originalUrls.forEach(function(originalUrl) {
+        originalUrl = originalUrl.trim();  // 空白を削除
+        if (originalUrl === '') return;  // 空行はスキップ
+
+        originalUrl = originalUrl.replace(/l\d+$/, '');
+
+        if (!originalUrl.endsWith('/')) {
+            originalUrl += '/';
+        }
+        var urlParts = originalUrl.split("/");
+        var newPath = urlParts[urlParts.length - 2] + ".dat";
+        var newUrl = "https://open.open2ch.net/" + urlParts[urlParts.length - 3] + "/dat/" + newPath;
+
+        // 出力エリアにリンクとして結果を表示
+        var link = document.createElement('li');
+        link.innerHTML = '<a href="' + newUrl + '">' + newUrl + '</a><br>';  // <br>を追加
+        document.getElementById('txt').appendChild(link);
+    });
+}
+
+
+</script>
+<body>
+  <div class="top">
+
+	<form>
+		<textarea id="text-area"></textarea>
+	</form>
+
+      <p>
+        <button onclick="change()">変換</button>
+      </p>
+  </div>  
+
+
+<ul id="txt" class="sure"></ul>
+
+
+</body>
+</html>
